@@ -1,0 +1,45 @@
+<main class="container py-3 flex-fill">
+    <h1 class="text-center">Dashboard</h1>
+    <div class="card my-3">
+        <div class="card-body">
+            <h3 class="card-title">Crea una nueva tarea</h3>
+            <form action="/nueva-tarjeta" method="POST">
+                <div class="mb-3">
+                    <label for="boardTitle" class="form-label">Tablero</label>
+                    <input type="text" class="form-control" id="boardTitle" name="boardTitle">
+                    <label for="listTitle" class="form-label">Lista</label>
+                    <input type="text" class="form-control" id="listTitle" name="listTitle">
+                    <label for="cardTitle" class="form-label">Tarea</label>
+                    <input type="text" class="form-control" id="cardTitle" name="cardTitle">
+                </div>
+                <button type="submit" class="btn btn-info">Añadir tarea</button>
+            </form>
+        </div>
+    </div>
+    <div class="card my-3">
+        {{#each boards}}
+        <div class="card-body">
+            <h3 class="card-title text-center mb-3">
+                {{this.name}}
+            </h3>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                {{#each this.lists}}
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            {{this.title}}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {{#each this.cards}}
+                            <li class="list-group-item">{{this.content}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <hr>
+        {{/each}}
+    </div>
+</main>

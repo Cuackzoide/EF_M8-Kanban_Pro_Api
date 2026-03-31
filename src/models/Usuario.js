@@ -1,0 +1,34 @@
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/connection');
+
+const Usuario = sequelize.define('Usuario', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    nombre: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    contraseña: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, {
+    hooks: {
+        beforeCreate: async (user) => {
+            const salt = await bcrypt.genSalt(10)
+            user.password = await bcrypt.hash(user.password, salt) // admin123 -> GyBn98546!!g
+        }
+    },
+    tableName: 'usuarios',
+    timestamps: false
+});
+
+module.exports = Usuario;
