@@ -7,8 +7,12 @@ const Lista = sequelize.define('Lista', {
         primaryKey: true,
         autoIncrement: true
     },
-    titulo: {
+    title: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    boardId: {
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 }, {

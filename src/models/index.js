@@ -4,14 +4,14 @@ const Lista = require('./Lista');
 const Tarjeta = require('./Tarjeta');
 
 // Relaciones
-Usuario.hasMany(Tablero, { foreignKey: 'usuarioId', onDelete: 'CASCADE' });
-Tablero.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+Usuario.hasMany(Tablero, { foreignKey: 'userId', as: 'tableros', onDelete: 'CASCADE' });
+Tablero.belongsTo(Usuario, { foreignKey: 'userId' });
 
-Tablero.hasMany(Lista, { foreignKey: 'tableroId', onDelete: 'CASCADE' });
-Lista.belongsTo(Tablero, { foreignKey: 'tableroId' });
+Tablero.hasMany(Lista, { foreignKey: 'boardId', as: 'listas', onDelete: 'CASCADE' });
+Lista.belongsTo(Tablero, { foreignKey: 'boardId' });
 
-Lista.hasMany(Tarjeta, { foreignKey: 'listaId', onDelete: 'CASCADE' });
-Tarjeta.belongsTo(Lista, { foreignKey: 'listaId' });
+Lista.hasMany(Tarjeta, { foreignKey: 'listId', as: 'tarjetas', onDelete: 'CASCADE' });
+Tarjeta.belongsTo(Lista, { foreignKey: 'listId' });
 
 module.exports = {
     Usuario,

@@ -7,13 +7,17 @@ const Tablero = sequelize.define('Tablero', {
         primaryKey: true,
         autoIncrement: true
     },
-    titulo: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    descripcion: {
+    description: {
         type: DataTypes.TEXT,
         allowNull: true
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tableros',

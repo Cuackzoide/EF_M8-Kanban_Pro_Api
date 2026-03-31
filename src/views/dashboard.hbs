@@ -1,9 +1,94 @@
 <main class="container py-3 flex-fill">
-    <h1 class="text-center">Dashboard</h1>
+    <h1 class="text-center">Bienvenido {{user.name}}!</h1>
+    <div class="card my-3">
+        {{#each tableros}}
+        <div class="card-header accordion" id="accordion{{this.id}}">
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse{{this.id}}" aria-expanded="false" aria-controls="collapse{{this.id}}">
+                        <h3 class="text-center">{{this.title}}</h3>
+                    </button>
+                </div>
+                <div id="collapse{{this.id}}" class="accordion-collapse collapse"
+                    data-bs-parent="#accordion{{this.id}}">
+                    <div class="accordion-body d-flex gap-2 align-items-center">
+                        <form action="/api/board/{{this.id}}?_method=PUT" method="POST"
+                            class="d-flex gap-2 align-items-center flex-grow-1">
+                            <input type="text" name="title" class="form-control form-control-sm" value="{{this.title}}"
+                                required>
+                            <button type="submit" class="btn btn-sm btn-outline-primary"><i
+                                    class="bi bi-pencil"></i></button>
+                        </form>
+                        <form action="/api/board/{{this.id}}?_method=DELETE" method="POST" class="m-0">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"><i
+                                    class="bi bi-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                {{#each this.listas}}
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header accordion" id="accordion{{this.id}}">
+                            <div class="accordion-item">
+                                <div class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{this.id}}" aria-expanded="false"
+                                        aria-controls="collapse{{this.id}}">
+                                        <h3>{{this.title}}</h3>
+                                    </button>
+                                </div>
+                                <div id="collapse{{this.id}}" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordion{{this.id}}">
+                                    <div class="accordion-body d-flex gap-2 align-items-center">
+                                        <form action="/api/list/{{this.id}}?_method=PUT" method="POST"
+                                            class="d-flex gap-2 align-items-center flex-grow-1">
+                                            <input type="text" name="title" class="form-control form-control-sm"
+                                                value="{{this.title}}" required>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary"><i
+                                                    class="bi bi-pencil"></i></button>
+                                        </form>
+                                        <form action="/api/list/{{this.id}}?_method=DELETE" method="POST" class="m-0">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"><i
+                                                    class="bi bi-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {{#each this.tarjetas}}
+                            <li class="list-group-item d-flex gap-2 align-items-center">
+                                <form action="/api/card/{{this.id}}?_method=PUT" method="POST"
+                                    class="d-flex gap-2 align-items-center flex-grow-1">
+                                    <input type="text" name="title" class="form-control form-control-sm"
+                                        value="{{this.title}}" required>
+                                    <button type="submit" class="btn btn-sm btn-outline-primary"><i
+                                            class="bi bi-pencil"></i></button>
+                                </form>
+                                <form action="/api/card/{{this.id}}?_method=DELETE" method="POST" class="m-0">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i
+                                            class="bi bi-trash"></i></button>
+                                </form>
+                            </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <hr>
+        {{/each}}
+    </div>
     <div class="card my-3">
         <div class="card-body">
             <h3 class="card-title">Crea una nueva tarea</h3>
-            <form action="/nueva-tarjeta" method="POST">
+            <form action="/api/newcard" method="POST">
                 <div class="mb-3">
                     <label for="boardTitle" class="form-label">Tablero</label>
                     <input type="text" class="form-control" id="boardTitle" name="boardTitle">
@@ -15,31 +100,5 @@
                 <button type="submit" class="btn btn-info">Añadir tarea</button>
             </form>
         </div>
-    </div>
-    <div class="card my-3">
-        {{#each boards}}
-        <div class="card-body">
-            <h3 class="card-title text-center mb-3">
-                {{this.name}}
-            </h3>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                {{#each this.lists}}
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            {{this.title}}
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            {{#each this.cards}}
-                            <li class="list-group-item">{{this.content}}</li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                </div>
-                {{/each}}
-            </div>
-        </div>
-        <hr>
-        {{/each}}
     </div>
 </main>

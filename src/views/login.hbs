@@ -3,14 +3,14 @@
         Iniciar Sesión
     </h1>
     <div class="card px-3 pt-3">
-        <form action="/login/login" method="post">
+        <form action="/api/auth/login" method="post">
             <div class="mb-3">
-                <label for="username" class="form-label">Usuario</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="admin">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="[EMAIL_ADDRESS]">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="admin123">
+                <input type="password" class="form-control" id="password" name="password" placeholder="[PASSWORD]">
             </div>
             <button type="submit" class="btn btn-info">Iniciar Sesión</button>
         </form>

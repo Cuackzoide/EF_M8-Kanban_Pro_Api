@@ -7,17 +7,21 @@ const Tarjeta = sequelize.define('Tarjeta', {
         primaryKey: true,
         autoIncrement: true
     },
-    titulo: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    descripcion: {
+    description: {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    posicion: {
+    position: {
         type: DataTypes.INTEGER,
         defaultValue: 0
+    },
+    listId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'tarjetas',
