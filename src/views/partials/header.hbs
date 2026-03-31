@@ -13,20 +13,22 @@
                 <ul class="navbar-nav">
                     {{#if user}}
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="/dashboard">Dashboard</a>
+                        <a class="nav-link text-warning" href="/dashboard"><i class="bi bi-speedometer2"></i>
+                            Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="/logout">Cerrar Sesión</a>
+                        <a class="nav-link text-warning" href="/logout"><i class="bi bi-box-arrow-right"></i> Cerrar
+                            Sesión</a>
                     </li>
                     {{else}}
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="/">Inicio</a>
+                        <a class="nav-link text-warning" href="/"><i class="bi bi-house"></i> Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="/register">Registro</a>
+                        <a class="nav-link text-warning" href="/register"><i class="bi bi-person-plus"></i> Registro</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="/login">Iniciar Sesión</a>
+                        <a class="nav-link text-warning" href="/login"><i class="bi bi-person"></i> Iniciar Sesión</a>
                     </li>
                     {{/if}}
                 </ul>
