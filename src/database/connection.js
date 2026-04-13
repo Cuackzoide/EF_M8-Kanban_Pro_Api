@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('pg'); // Truco para obligar a Vercel a incluir el paquete PostgreSQL
 const { Sequelize } = require('sequelize');
 
 let sequelize;
