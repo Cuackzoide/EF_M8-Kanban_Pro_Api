@@ -7,6 +7,10 @@
 </p>
 
 <p align="center">
+  🚀 <strong>Live Demo: <a href="https://kanban-pro-one.vercel.app/" target="_blank">kanban-pro-one.vercel.app</a></strong>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
   <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js" />
   <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
