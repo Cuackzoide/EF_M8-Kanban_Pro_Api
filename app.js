@@ -34,15 +34,17 @@ app.use(methodOverride('_method'));
 app.use(routes);
 
 // Entry point of the application
-app.listen(PORT, async () => {
-    try {
-        await sequelize.sync({ alter: true });
-        console.log('✅ KanbanPro DB Server - Conectado a la base de datos');
-        console.log(`Servidor corriendo en http://localhost:${PORT}`);
-    } catch (error) {
-        console.error('❌ Error de conexión:', error);
-        process.exit(1);
-    }
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, async () => {
+        try {
+            await sequelize.sync({ alter: true });
+            console.log('✅ KanbanPro DB Server - Conectado a la base de datos');
+            console.log(`Servidor corriendo en http://localhost:${PORT}`);
+        } catch (error) {
+            console.error('❌ Error de conexión:', error);
+            process.exit(1);
+        }
+    });
+}
 
-
+module.exports = app;
