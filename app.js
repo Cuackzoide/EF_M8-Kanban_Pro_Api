@@ -13,6 +13,11 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'src/views'));
 hbs.registerPartials(path.join(__dirname, 'src/views/partials'));
 
+// Helpers personalizados
+hbs.registerHelper('eq', function (a, b) {
+    return a === b;
+});
+
 //servir ruta bootstrap dinámica
 app.use("/assets/vendors/bootstrap", express.static(path.join(__dirname, "node_modules", "bootstrap", "dist")))
 

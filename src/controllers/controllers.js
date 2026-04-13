@@ -18,6 +18,11 @@ const viewRegister = (req, res) => {
 const viewDashboard = async (req, res) => {
     try {
         const usuario = await Usuario.findByPk(req.user.id, {
+            order: [
+                [{ model: Tablero, as: 'tableros' }, 'id', 'ASC'],
+                [{ model: Tablero, as: 'tableros' }, { model: Lista, as: 'listas' }, 'id', 'ASC'],
+                [{ model: Tablero, as: 'tableros' }, { model: Lista, as: 'listas' }, { model: Tarjeta, as: 'tarjetas' }, 'id', 'ASC']
+            ],
             include: [{
                 model: Tablero,
                 as: 'tableros',
@@ -38,6 +43,20 @@ const viewDashboard = async (req, res) => {
 
         const user = usuario.get({ plain: true });
 
+        // Añadir referencias de navegación entre listas
+        user.tableros.forEach(tablero => {
+            tablero.listas.forEach((lista, index) => {
+                lista.prevListId = index > 0 ? tablero.listas[index - 1].id : null;
+                lista.nextListId = index < tablero.listas.length - 1 ? tablero.listas[index + 1].id : null;
+                
+                // Lógica de bordes clásica de Kanban:
+                // Flecha retroceder desactivada en inicio (Asignado)
+                lista.disableBack = index === 0;
+                // Flecha avanzar desactivada en el último (Finalizado)
+                lista.disableNext = index === tablero.listas.length - 1;
+            });
+        });
+
         res.render('dashboard', {
             title: user.name,
             user: user,
@@ -49,44 +68,34 @@ const viewDashboard = async (req, res) => {
     }
 };
 
+const newBoard = async (req, res) => {
+    const { title } = req.body;
+    try {
+        const tablero = await Tablero.create({
+            title: title,
+            userId: req.user.id
+        });
+        
+        await Lista.bulkCreate([
+            { title: 'Asignado', boardId: tablero.id },
+            { title: 'En Proceso', boardId: tablero.id },
+            { title: 'Finalizado', boardId: tablero.id }
+        ]);
+        
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error al crear el tablero");
+    }
+};
+
 const newCard = async (req, res) => {
-    const { boardTitle, listTitle, cardTitle } = req.body;
+    const { listId, cardTitle } = req.body;
 
     try {
-        // 1. Buscar o crear el tablero para el usuario autenticado
-        let tablero = await Tablero.findOne({
-            where: {
-                title: boardTitle,
-                userId: req.user.id
-            }
-        });
-
-        if (!tablero) {
-            tablero = await Tablero.create({
-                title: boardTitle,
-                userId: req.user.id
-            });
-        }
-
-        // 2. Buscar o crear la lista en el tablero
-        let lista = await Lista.findOne({
-            where: {
-                title: listTitle,
-                boardId: tablero.id
-            }
-        });
-
-        if (!lista) {
-            lista = await Lista.create({
-                title: listTitle,
-                boardId: tablero.id
-            });
-        }
-
-        // 3. Crear la tarjeta en la lista
         await Tarjeta.create({
             title: cardTitle,
-            listId: lista.id
+            listId: listId
         });
 
         res.redirect('/dashboard');
@@ -98,13 +107,14 @@ const newCard = async (req, res) => {
 
 const updateCard = async (req, res) => {
     const { id } = req.params;
-    const { title } = req.body;
+    const { title, listId } = req.body;
     try {
         const card = await Tarjeta.findByPk(id);
         if (!card) {
             return res.status(404).send("Tarjeta no encontrada");
         }
-        card.title = title;
+        if (title) card.title = title;
+        if (listId) card.listId = listId;
         await card.save();
         res.redirect('/dashboard');
     } catch (error) {
@@ -127,37 +137,7 @@ const deleteCard = async (req, res) => {
     }
 }
 
-const updateList = async (req, res) => {
-    const { id } = req.params;
-    const { title } = req.body;
-    try {
-        const list = await Lista.findByPk(id);
-        if (!list) {
-            return res.status(404).send("Lista no encontrada");
-        }
-        list.title = title;
-        await list.save();
-        res.redirect('/dashboard');
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error al actualizar la lista");
-    }
-}
 
-const deleteList = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const list = await Lista.findByPk(id);
-        if (!list) {
-            return res.status(404).send("Lista no encontrada");
-        }
-        await list.destroy();
-        res.redirect('/dashboard');
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error al eliminar la lista");
-    }
-}
 
 const updateBoard = async (req, res) => {
     const { id } = req.params;
@@ -249,4 +229,4 @@ const logout = (req, res) => {
     res.clearCookie("jwt")
     res.redirect("/")
 }
-module.exports = { viewHome, viewLogin, viewRegister, viewDashboard, newCard, login, register, logout, updateCard, deleteCard, updateList, deleteList, updateBoard, deleteBoard };
+module.exports = { viewHome, viewLogin, viewRegister, viewDashboard, newBoard, newCard, login, register, logout, updateCard, deleteCard, updateBoard, deleteBoard };
