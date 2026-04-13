@@ -72,6 +72,18 @@ Aborda los desafíos reales como:
 
 ---
 
+## 📂 Estructura del Código
+
+```text
+├── src/
+│   ├── controllers/ # Lógica de manejo de peticiones
+│   ├── routes/      # Definición de endpoints
+│   ├── models/      # Consultas y modelos de datos (SQL)
+│   └── app.js       # Configuración central del servidor
+├── .env.example     # Plantilla de variables de entorno
+└── package.json     # Dependencias y scripts
+```
+
 ## 🚀 Instalación y Uso Local
 
 Sigue estos pasos para desplegar el proyecto en tu entorno local:
